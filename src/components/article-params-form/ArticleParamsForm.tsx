@@ -36,18 +36,23 @@ export const ArticleParamsForm = ({
 
 	const asideRef = useRef<HTMLElement | null>(null);
 
-	const handleClickOutside = (event: MouseEvent) => {
-		if (asideRef.current && !asideRef.current.contains(event.target as Node)) {
-			setIsOpen(false);
-		}
-	};
-
 	useEffect(() => {
+		const handleClickOutside = (event: MouseEvent) => {
+			if (
+				asideRef.current &&
+				!asideRef.current.contains(event.target as Node)
+			) {
+				setIsOpen(false);
+			}
+		};
+
 		if (isOpen) {
 			document.addEventListener('mousedown', handleClickOutside);
 		}
 		return () => {
-			document.removeEventListener('mousedown', handleClickOutside);
+			if (isOpen) {
+				document.removeEventListener('mousedown', handleClickOutside);
+			}
 		};
 	}, [isOpen]);
 
